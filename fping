@@ -1,0 +1,61 @@
+#!/usr/bin/python3
+import os
+import sys
+from colors import print_success, print_error, print_header
+
+CYAN  = "\033[1;36m"
+RESET = "\033[0;0m"
+REVERSE = "\033[;7m"
+RED   = "\033[1;31m"  
+
+arg_len = (len(sys.argv[1:]))
+hostname = "10.149.71.20"
+
+def print_success(text):
+    sys.stdout.write(CYAN)
+    sys.stdout.write("SUCCESS:\t")
+    sys.stdout.write(RESET)
+    sys.stdout.write(text)
+    sys.stdout.write(CYAN)
+    sys.stdout.write("\t✔")
+    sys.stdout.write(RESET)
+    print("")
+
+def print_error(text):
+    sys.stdout.write(RED)
+    sys.stdout.write("ERROR:\t\t")
+    sys.stdout.write(RESET)
+    sys.stdout.write(text)
+    sys.stdout.write(RED)
+    sys.stdout.write("\tx")
+    sys.stdout.write(RESET)
+    print("")
+    
+def print_header(text):
+    print("")
+    sys.stdout.write(CYAN + REVERSE)
+    print (text)
+    sys.stdout.write(RESET)
+    print("---------------------------------")
+
+
+print_header("Ping Tests:")
+def check_ping(hostname):
+    response = os.system("ping -c 1 " + hostname + ">/dev/null 2>&1")
+    # and then check the response...
+    if response == 0:
+        pingstatus = "Active\t" + hostname
+        print_success(hostname)
+    else:
+        pingstatus = "Error\t"  + hostname
+        print_error(hostname)
+    
+
+if (arg_len != 0):
+    # loop each ip
+    # regex?
+    hostname = sys.argv[1]
+    args = sys.argv[1:]
+    for ip in args:
+        check_ping(ip)
+    print("")
